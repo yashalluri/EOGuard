@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        #chatbox {
+            height: 400px;
+            overflow-y: scroll;
+            transition: all 0.3s ease;
+        }
+        .message {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .timestamp {
+            font-size: 0.75rem;
+            color: gray;
+        }
+        .eoguard {
+            text-align: left;
+            color: gray;
+        }
+        .contractor {
+            text-align: right;
+            color: blue;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-96">
+        <h1 class="text-xl font-bold mb-4 text-center">Automated Chat</h1>
+        <div id="chatbox" class="border border-gray-300 rounded-lg p-4 mb-4 bg-gray-50 overflow-y-auto">
+            <!-- Chat messages will be displayed here -->
+        </div>
+        <button onclick="startChat()" class="bg-blue-500 text-white rounded-lg p-2 w-full mb-2">Start Negotiation</button>
+    </div>
+
+    <script>
+        function startChat() {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += `<div class="eoguard mb-2"><strong>EOGuard:</strong> Starting negotiation...</div>`;
+            chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+
+            fetch('/start_chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                let delay = 2000; // Delay between messages in milliseconds
+                data.messages.forEach((message, index) => {
+                    setTimeout(() => {
+                        const sender = message.startsWith('EOGuard') ? 'EOGuard' : 'Contractor';
+                        const className = sender === 'EOGuard' ? 'eoguard' : 'contractor';
+                        chatbox.innerHTML += `<div class="${className} mb-2"><strong>${sender}:</strong> ${message}</div>`;
+                        chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+                    }, index * delay); // Increase delay for each message
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                chatbox.innerHTML += `<div class="contractor mb-2"><strong>Contractor:</strong> An error occurred. Please try again.</div>`;
+            });
+        }
+    </script>
+</body>
+</html>
