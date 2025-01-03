@@ -48,9 +48,5 @@ Here are some ideas to help you get started, but we encourage you to not limit y
 - How are you going to get data to your front end? 
   - A DB and API to pull the data from?
   - Maybe it's streamed?
-
-## Workshop: Introduction to Mobile Development 📱
-**Check out our workshop at 3:30 PM in ECSW 1.315**
-Join EOG for an iOS development workshop at HackUTD where we'll explore the fundamentals of Swift and SwiftUI! Whether you're a beginner or looking to refine your skills, you'll learn how to kickstart a new project, navigate the development environment, and create engaging user interfaces. Get ready to unleash your creativity and start building your own iOS apps!
  
 Team:  Natalie Pedigo,Yashwanth Alluri,Pavani Sri Harsha Gurram,Viswa Kotra
